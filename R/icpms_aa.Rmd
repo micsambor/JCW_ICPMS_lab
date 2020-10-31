@@ -53,6 +53,25 @@ rm(list=setdiff(ls(), "icpms_merged"))
 
 ```{r}
 
+aa_data_import <- read_csv("~/icpms_lab/JCW_ICPMS_lab/data/AA_Data.csv", skip = 4)
+
+
+aa_data <- aa_data_import[!(aa_data_import$`Sample Key`=="Sample Blank" | aa_data_import$`Sample Key`=="check10"),]
+
+metal <- c("Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr", "Cr")
+
+
+aa_newlabel <- aa_data_import
+aa_newlabel$`Sample Key` <- gsub("Sample Blank", 0, aa_newlabel$`Sample Key`)
+aa_newlabel$`Sample Key` <- gsub("check10", 100, aa_newlabel$`Sample Key`)
+
+aa_newlabel["Metal"] <- metal
+
+aa_newlabel
+```
+
+```{r}
+
 ```
 
 
