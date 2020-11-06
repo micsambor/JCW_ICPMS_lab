@@ -45,6 +45,9 @@ icpms_tidy <- icpms_data %>%
 all(RSD_icpms$Sample.Key==icpms_tidy$Sample.Key, RSD_icpms$metal==icpms_tidy$metal)
 
 icpms_merged <- merge(icpms_tidy, sample_key)
+ write.csv(icpms_merged, file = "~/icpms_lab/JCW_ICPMS_lab/data/icpms_tidy.csv")
+
+
 ```
 
 ```{r, warning= FALSE}
@@ -67,7 +70,10 @@ aa_newlabel$`Sample Key` <- gsub("check10", 100, aa_newlabel$`Sample Key`)
 
 aa_newlabel["Metal"] <- metal
 
-aa_newlabel
+
+
+ write.csv(aa_newlabel, file = "~/icpms_lab/JCW_ICPMS_lab/data/aa_tidy.csv")
+
 ```
 
 ```{r}
