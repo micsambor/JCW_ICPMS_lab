@@ -9,22 +9,38 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+```{r}
+sample_sites <- unique(filter(ICPMS_tidy_example, site!="MB" , site!="")$site)
+metals_analyzed <- unique(ICPMS_tidy_example$metal)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+icpms_cal <- NULL
+  for (unique_metal in metals_analyzed) {
+  cal <- ICPMS_tidy_example %>%
+  filter(type =="Cal1" | type == "Cal2" | type == "Cal3") %>%
+  filter(metal == unique_metal) %>% 
+  select(concentration, cps, rsd)
+  
+  w <- 1/(cal$cps*cal$rsd)^2
+  model <- lm(cal$cps ~ cal$concentration, weights = w)
 
-```{r cars}
-summary(cars)
+  slope <- model$coefficients[2]
+  intercept <- model$coefficients[1]
+  slope_std <- summary(model)$coefficients[2,2]
+  intercept_std <- summary(model)$coefficients[1,2]
+
+  plot(cal$cps ~ cal$concentration,
+  xlab = paste("Concentration of ", unique_metal, "(ppb)"), 
+  ylab = "Counts per second") +
+  abline(model, col = "red") +
+  title(paste("Calibration for", unique_metal))
+  
+  equation <- tibble(metal = unique_metal, slope, slope_std, intercept, intercept_std)
+icpms_cal <- rbind(icpms_cal, equation)
+}
+
+icpms_cal
+remove(equation,cal, slope, slope_std, intercept, intercept_std, w, mode, unique_metal)
+
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
