@@ -160,4 +160,7 @@ sample_data <- merge(ICPMS_tidy_example, sample_data_mb) %>%
                   (mass_e/mass_of_soil)^2))%>%
   select(-concentration, -type, -mass_of_soil, -total_volume, -cps, -rsd, -conc_dil_blanked, -conc_dil_blanked_error, -conc_dil, - conc_dil_error)
 ```
+```{r, warning = FALSE}
+rm(list = ls()[!ls()%in% c("ICMPS_tidy_example", "sample_data")])
+```
 
